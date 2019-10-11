@@ -1,6 +1,6 @@
 # RED HAT ANSIBLE WORKSHOPS
 
-The Red Hat Ansible Automation Workshops project is intended for effectively demonstrating Ansible's capabilities through instructor-led workshops or self-paced exercises.  
+The Ansible Automation Workshops project is intended for effectively demonstrating Ansible's capabilities through instructor-led workshops or self-paced exercises.  
 
 
 # INSTRUCTOR LED WORKSHOPS:
@@ -28,8 +28,3 @@ The Red Hat Ansible Automation Workshops project is intended for effectively dem
  - [How to contribute](docs/contribute.md)
  - [How to use the AWS Lab Provisioner](provisioner/README.md)
  - [FAQ](docs/faq.md)
-
-
-
----
-![Red Hat Ansible Automation](images/rh-ansible-automation.png)
