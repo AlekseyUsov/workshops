@@ -1,4 +1,4 @@
-# RED HAT ANSIBLE WORKSHOPS
+# ANSIBLE WORKSHOPS
 
 The Ansible Automation Workshops project is intended for effectively demonstrating Ansible's capabilities through instructor-led workshops or self-paced exercises.  
 
