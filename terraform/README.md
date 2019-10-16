@@ -17,7 +17,7 @@ chmod 400 workshop.pem
 ```
 
 ```
-cat .gitignore
+Open and edit .gitignore
 
 terraform.tfstate*
 .terraform
@@ -31,7 +31,7 @@ All subsequent tasks are performed on the terraform node as well, except for 8, 
 
 
 ```
-cat ec2.tf
+Open and edit ec2.tf
 
 provider "aws" {
   region     = var.region
@@ -63,9 +63,9 @@ resource "aws_instance" "managed_node" {
 ```
 
 ```
-cat variables.tf
+Open and edit variables.tf
 
-ariable "amis" {
+variable "amis" {
   type = map(string)
   default = {
     "us-east-2" = "ami-03291866"
@@ -94,7 +94,7 @@ variable "key_name" {
 ```
 
 ```
-cat versions.tf
+Open and edit versions.tf
 
 terraform {
   required_version = ">= 0.12"
@@ -120,7 +120,7 @@ git push -u origin master
 # Task 2
 
 ```
-cat ec2.tf
+Open and edit ec2.tf
 
 provider "aws" {
   region     = var.region
@@ -205,7 +205,7 @@ git push
 # Task 3
 
 ```
-cat ec2.tf
+Open and edit ec2.tf
 
 provider "aws" {
   region     = var.region
@@ -296,7 +296,7 @@ git push
 # Task 4
 
 ```
-cat inventory.tf
+Open and edit inventory.tf
 
 data "template_file" "inventory" {
   template = file("${path.module}/inventory.tpl")
@@ -321,7 +321,7 @@ resource "null_resource" "inventory" {
 ```
 
 ```
-cat inventory.tpl
+Open and edit inventory.tpl
 
 [web]
 %{ for ip in split(",", node_ips) ~}
@@ -348,7 +348,7 @@ git push
 # Task 5
 
 ```
-cat workshop.yml
+Open and edit workshop.yml
 
 ---
 - name: Provision workshop
@@ -365,7 +365,7 @@ cat workshop.yml
 
 Add the following parameter to Ansible configuration file to disable retry files in case you make a mistake and your playbook fails:
 ```
-cat /etc/ansible/ansible.cfg
+Open and edit /etc/ansible/ansible.cfg
 
 [defaults]
 retry_files_enabled = false
@@ -399,7 +399,7 @@ git push
 # Task 6
 
 ```
-cat ec2.tf
+Open and edit ec2.tf
 
 provider "aws" {
   region     = var.region
@@ -489,7 +489,7 @@ terraform outputs
 ```
 
 ```
-cat workshop.yml
+Open and edit workshop.yml
 
 ---
 - name: Provision workshop
@@ -527,7 +527,7 @@ git push
 # Task 7
 
 ```
-cat ec2.tf
+Open and edit ec2.tf
 
 provider "aws" {
   region     = var.region
@@ -627,7 +627,7 @@ output "ansible_control_node_ip" {
 ```
 
 ```
-cat workshop.yml
+Open and edit workshop.yml
 
 ---
 - name: Provision workshop
@@ -727,7 +727,7 @@ cat workshop.yml
 Prepare `tower.yml` (details were provided via email):
 
 ```
-cat tower.yml
+Open and edit tower.yml
 
 tower_host: tower.demo.li9.com
 tower_username: <your_tower_username>
@@ -745,7 +745,7 @@ Make sure to take note of the password, as you will use it later to create a cre
 
 Prepare the playbook for registering and subscribing Ansible control node:
 ```
-cat register.yml
+Open and edit register.yml
 
 ---
 - name: Subscribe
