@@ -782,23 +782,23 @@ It's recommended to use first and last name or any other personalized string in 
 2. Create a Git-managed project in your organization with options `Clean` and `Update Revision on Launch` enabled.
 3. Create a job template with the following parameters:
 
-  3.1. Project: <your_project_from_2>
+    3.1. Project: <your_project_from_2>
 
-  3.2. Inventory: Demo Inventory
+    3.2. Inventory: Demo Inventory
 
-  3.3. Playbook: workshop.yml
+    3.3. Playbook: workshop.yml
 
-  3.4. Credential: tower (type Vault)
+    3.4. Credential: tower (type Vault)
 4. Create survey with the following parameters:
 
-  4.1. Prompt: <arbitrary>
+    4.1. Prompt: \<arbitrary\>
 
-  4.2. Answer variable name: state (must match its counterpart from the playbook you selected in 3.3)
+    4.2. Answer variable name: state (must match its counterpart from the playbook you selected in 3.3)
 
-  4.3. Asnwer type: Text
+    4.3. Asnwer type: Text
 
-  4.4. Minimum length: 6
+    4.4. Minimum length: 6
 
-  4.5. Maximum length: 7
+    4.5. Maximum length: 7
 
-  4.6. Default answer: present
+    4.6. Default answer: present
