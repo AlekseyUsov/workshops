@@ -645,8 +645,8 @@ cat workshop.yml
 
   - name: Create Ansible Tower inventory
     tower_inventory:
-      name: Workshop
-      organization: Workshop
+      name: \<choose_unique\>
+      organization: \<your_organization\>
       tower_host: "{{tower_host}}"
       tower_username: "{{tower_username}}"
       tower_password: "{{tower_password}}"
@@ -656,7 +656,7 @@ cat workshop.yml
   - name: Add ansible control node to Ansible Tower inventory
     tower_host:
       name: "ansible"
-      inventory: Workshop
+      inventory: \<name_from_previous_task\>
       tower_host: "{{tower_host}}"
       tower_username: "{{tower_username}}"
       tower_password: "{{tower_password}}"
@@ -667,8 +667,8 @@ cat workshop.yml
 
   - name: Create Ansible Tower project
     tower_project:
-      name: Workshop
-      organization: Workshop
+      name: \<choose_unique\>
+      organization: \<your_organization\>
       scm_type: git
       scm_update_on_launch: yes
       scm_clean: yes
@@ -689,11 +689,11 @@ cat workshop.yml
       become_enabled: yes
       credential: workshop-aws-ssh
       vault_credential: redhat
-      inventory: Workshop
+      inventory: \<created_inventory\>
       job_type: run
-      name: Register nodes
+      name: \<choose_unique\>
       playbook: register.yml
-      project: Workshop
+      project: \<name_from_previous_task\>
       tower_host: "{{tower_host}}"
       tower_username: "{{tower_username}}"
       tower_password: "{{tower_password}}"
@@ -702,14 +702,14 @@ cat workshop.yml
 
   - name: Launch job template to register provisioned nodes with Red Hat
     tower_job_launch:
-      job_template: "Register nodes"
+      job_template: "<name_from_previous_task>"
       job_type: run
       tower_host: "{{tower_host}}"
       tower_username: "{{tower_username}}"
       tower_password: "{{tower_password}}"
       tower_verify_ssl: no
       credential: workshop-aws-ssh
-      inventory: Workshop
+      inventory: \<created_inventory\>
     when: state == "present"
 ```
 
@@ -756,7 +756,7 @@ cat register.yml
   - name: Install Ansible
     yum:
       name: ansible
-state: present
+    state: present
 ```
 
 Note that `redhat.yml` file is already prepared for you, but you were not provided with a password to decrypt it. This is by design, as the password is stored encrypted in Ansible Tower available for your use.
