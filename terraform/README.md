@@ -1,5 +1,14 @@
 # Task 0
 
+On your laptop:
+```
+git clone https://github.com/AlekseyUsov/workshops.git
+cd workshops/terraform
+ssh -i workshop.pem ec2-user@<your_terraform_ip_from_email>
+
+```
+
+On your terraform node:
 ```
 mkdir terraform
 cd terraform
@@ -15,6 +24,8 @@ terraform.tfstate*
 *.retry
 .ssh
 ```
+
+All subsequent tasks are performed on the terraform node as well, except for 8, which covers Ansible Tower.
 
 # Task 1
 
@@ -713,7 +724,7 @@ cat workshop.yml
     when: state == "present"
 ```
 
-Prepare `tower.yml`:
+Prepare `tower.yml` (details were provided via email):
 
 ```
 cat tower.yml
