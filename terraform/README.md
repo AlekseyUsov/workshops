@@ -4,6 +4,7 @@
 mkdir terraform
 cd terraform
 cp ~/workshop/terraform/* .
+chmod 400 workshop.pem
 ```
 
 ```
@@ -12,6 +13,7 @@ cat .gitignore
 terraform.tfstate*
 .terraform
 *.retry
+.ssh
 ```
 
 # Task 1
@@ -143,9 +145,6 @@ resource "aws_instance" "ansible" {
       private_key = file("workshop.pem")
     }
   }
-  depends_on = [
-    tls_private_key.ansible
-  ]
 }
 
 resource "aws_instance" "managed_node" {
@@ -168,9 +167,6 @@ resource "aws_instance" "managed_node" {
       private_key = file("workshop.pem")
     }
   }
-  depends_on = [
-    tls_private_key.ansible
-  ]
 }
 
 resource "tls_private_key" "ansible" {
@@ -179,6 +175,14 @@ resource "tls_private_key" "ansible" {
 ```
 
 ```
+terraform init
+terraform validate
+terraform plan
+terraform apply
+terraform taint aws_instance.ansible
+terraform taint aws_instance.managed_node[0]
+terraform taint aws_instance.managed_node[1]
+terraform taint aws_instance.managed_node[2]
 terraform apply
 ```
 
@@ -226,9 +230,6 @@ resource "aws_instance" "ansible" {
       private_key = file(local.private_key)
     }
   }
-  depends_on = [
-    tls_private_key.ansible
-  ]
 }
 
 resource "aws_instance" "managed_node" {
@@ -251,9 +252,6 @@ resource "aws_instance" "managed_node" {
       private_key = file(local.private_key)
     }
   }
-  depends_on = [
-    tls_private_key.ansible
-  ]
 }
 
 resource "tls_private_key" "ansible" {
@@ -273,6 +271,9 @@ resource "local_file" "ansible_private_key" {
 ```
 
 ```
+terraform init
+terraform validate
+terraform plan
 terraform apply
 ```
 
@@ -321,6 +322,9 @@ ansible ansible_host=${control_ip}
 ```
 
 ```
+terraform init
+terraform validate
+terraform plan
 terraform apply
 ```
 
@@ -348,7 +352,7 @@ cat workshop.yml
       state: "{{state}}"
 ```
 
-Add the following parameter to Ansible configuration file to disable retry files:
+Add the following parameter to Ansible configuration file to disable retry files in case you make a mistake and your playbook fails:
 ```
 cat /etc/ansible/ansible.cfg
 
@@ -372,7 +376,7 @@ ansible-playbook workshop.yml -e state=present -CD
 ansible-playbook workshop.yml -e state=present
 ```
 
-Notice that not all Ansible modules support check mode.
+Note that not all Ansible modules support check mode.
 
 Commit the changes:
 ```
@@ -420,9 +424,6 @@ resource "aws_instance" "ansible" {
       private_key = file(local.private_key)
     }
   }
-  depends_on = [
-    tls_private_key.ansible
-  ]
 }
 
 resource "aws_instance" "managed_node" {
@@ -445,9 +446,6 @@ resource "aws_instance" "managed_node" {
       private_key = file(local.private_key)
     }
   }
-  depends_on = [
-    tls_private_key.ansible
-  ]
 }
 
 resource "tls_private_key" "ansible" {
@@ -473,9 +471,6 @@ output "ansible_inventory" {
   value = local.inventory
 }
 
-output "ansible_control_node_ip" {
-  value = aws_instance.ansible.public_ip
-}
 ```
 
 ```
@@ -568,9 +563,6 @@ resource "aws_instance" "ansible" {
     }
     on_failure = "continue"
   }
-  depends_on = [
-    tls_private_key.ansible
-  ]
 }
 
 resource "aws_instance" "managed_node" {
@@ -593,9 +585,6 @@ resource "aws_instance" "managed_node" {
       private_key = file(local.private_key)
     }
   }
-  depends_on = [
-    tls_private_key.ansible
-  ]
 }
 
 resource "tls_private_key" "ansible" {
@@ -721,7 +710,7 @@ cat workshop.yml
       tower_verify_ssl: no
       credential: workshop-aws-ssh
       inventory: Workshop
-when: state == "present"
+    when: state == "present"
 ```
 
 Prepare `tower.yml`:
@@ -780,6 +769,26 @@ git commit -m 'Added register.yml, destroy provisioner, and tower_* tasks'
 git push
 ```
 
+Cleanup:
+```
+terraform destroy
+```
+
 # Task 8: Ansible Tower
 
-It's recommended to use first and last name or any other personalized string in Ansible Tower names of objects to guarantee uniqueness.
+It's recommended to use first and last name or any other personalized string in Ansible Tower names of objects to guarantee uniqueness. For example, you may choose to use `FirstLast_Provision` scheme for assets you create manually and `FirstLast_Register` for assets created by Ansible (`tower.yml`).
+
+1. Create a Vault credential with an arbitrary name in your organization. The credential must store the password you used to encrypt `tower.yml` file.
+2. Create a Git-managed project in your organization with options `Clean` and `Update Revision on Launch` enabled.
+3. Create a job template with the following parameters:
+  3.1. Project: <your_project_from_2>
+  3.2. Inventory: Demo Inventory
+  3.3. Playbook: workshop.yml
+  3.4. Credential: tower (type Vault)
+4. Create survey with the following parameters:
+  4.1. Prompt: <arbitrary>
+  4.2. Answer variable name: state (must match its counterpart from the playbook you selected in 3.3)
+  4.3. Asnwer type: Text
+  4.4. Minimum length: 6
+  4.5. Maximum length: 7
+  4.6. Default answer: present
