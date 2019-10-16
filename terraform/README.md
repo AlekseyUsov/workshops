@@ -121,8 +121,8 @@ resource "aws_instance" "ansible" {
   availability_zone = "us-east-2a"
   key_name          = var.key_name
   security_groups   = ["default"]
-  tags = {
-    Name                                                     = "ansible"
+  tags   = {
+    Name = "ansible"
   }
   provisioner "file" {
     content = tls_private_key.ansible.private_key_pem
@@ -154,8 +154,8 @@ resource "aws_instance" "managed_node" {
   availability_zone = "${var.region}${element(var.zones, count.index)}"
   key_name          = var.key_name
   security_groups   = ["default"]
-  tags = {
-    Name                                                     = "node${count.index+1}"
+  tags   = {
+    Name = "node${count.index+1}"
   }
   provisioner "file" {
     content = tls_private_key.ansible.public_key_openssh
@@ -528,8 +528,8 @@ resource "aws_instance" "ansible" {
   availability_zone = "us-east-2a"
   key_name          = var.key_name
   security_groups   = ["default"]
-  tags = {
-    Name                                                     = "ansible"
+  tags   = {
+    Name = "ansible"
   }
   provisioner "file" {
     content = tls_private_key.ansible.private_key_pem
@@ -572,8 +572,8 @@ resource "aws_instance" "managed_node" {
   availability_zone = "${var.region}${element(var.zones, count.index)}"
   key_name          = var.key_name
   security_groups   = ["default"]
-  tags = {
-    Name                                                     = "node${count.index+1}"
+  tags   = {
+    Name = "node${count.index+1}"
   }
   provisioner "file" {
     content = tls_private_key.ansible.public_key_openssh
@@ -645,8 +645,8 @@ cat workshop.yml
 
   - name: Create Ansible Tower inventory
     tower_inventory:
-      name: \<choose_unique\>
-      organization: \<your_organization\>
+      name: <choose_unique>
+      organization: <your_organization>
       tower_host: "{{tower_host}}"
       tower_username: "{{tower_username}}"
       tower_password: "{{tower_password}}"
@@ -656,7 +656,7 @@ cat workshop.yml
   - name: Add ansible control node to Ansible Tower inventory
     tower_host:
       name: "ansible"
-      inventory: \<name_from_previous_task\>
+      inventory: <name_from_previous_task>
       tower_host: "{{tower_host}}"
       tower_username: "{{tower_username}}"
       tower_password: "{{tower_password}}"
@@ -667,8 +667,8 @@ cat workshop.yml
 
   - name: Create Ansible Tower project
     tower_project:
-      name: \<choose_unique\>
-      organization: \<your_organization\>
+      name: <choose_unique>
+      organization: <your_organization>
       scm_type: git
       scm_update_on_launch: yes
       scm_clean: yes
@@ -689,11 +689,11 @@ cat workshop.yml
       become_enabled: yes
       credential: workshop-aws-ssh
       vault_credential: redhat
-      inventory: \<created_inventory\>
+      inventory: <created_inventory>
       job_type: run
-      name: \<choose_unique\>
+      name: <choose_unique>
       playbook: register.yml
-      project: \<name_from_previous_task\>
+      project: <name_from_previous_task>
       tower_host: "{{tower_host}}"
       tower_username: "{{tower_username}}"
       tower_password: "{{tower_password}}"
@@ -709,7 +709,7 @@ cat workshop.yml
       tower_password: "{{tower_password}}"
       tower_verify_ssl: no
       credential: workshop-aws-ssh
-      inventory: \<created_inventory\>
+      inventory: <created_inventory>
     when: state == "present"
 ```
 
